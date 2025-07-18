@@ -7,12 +7,40 @@
     <hr>
     <h4>Lista de Games</h4>
     <ul id="games"></ul>
+    <hr>
+    <h4>Novo Game</h4>
+    <input type="text" name="title" id="title" placeholder="Título do game"><br>
+    <input type="number" name="year" id="year" placeholder="Ano"><br>
+    <input type="number" name="price" id="price" placeholder="Preço"><br>
+    <button type="button" onclick="createGame()">Criar</button>
 </head>
 <body>
 
 </body>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>  
     <script>
+        function createGame(){
+            var titleInput = document.getElementById("title")
+            var yearInput = document.getElementById("year")
+            var priceInput = document.getElementById("price")
+
+            var game = {
+                title: titleInput.value,
+                year: yearInput.value,
+                price: priceInput.value
+            }
+
+            axios.post("http://localhost:50000/game", game).then((response) => {
+                if (response.status == 200) {
+                    alert("Game cadastrado com sucesso!")
+                    window.location.reload(true) // Recarrega a página web
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+
+
         axios.get('http://localhost:50000/games').then((request) => {
             var games = request.data
             var list = document.getElementById("games")
