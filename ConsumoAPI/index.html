@@ -40,6 +40,18 @@
             })
         }
 
+        function deleteGame(listItem){
+            var id = listItem.getAttribute("data-id")
+            axios.delete("http://localhost:50000/game/"+id).then((response) => {
+                if (response.status == 200) {
+                    alert("Game deletado com sucesso!")
+                    window.location.reload(true) // Recarrega a página web
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+
 
         axios.get('http://localhost:50000/games').then((request) => {
             var games = request.data
@@ -47,7 +59,20 @@
             
             games.forEach(game => {
                 var item = document.createElement("li")
-                item.innerHTML = game.id + " - " + game.title
+
+                item.setAttribute("data-id", game.id)
+                item.setAttribute("data-title", game.title)
+                item.setAttribute("data-year", game.year)
+                item.setAttribute("data-price", game.price)
+
+                item.innerHTML = game.id + " - " + game.title + " - $" + game.price + " "
+
+                var deleteBtn = document.createElement("button")
+                deleteBtn.innerHTML = "Deletar"
+                deleteBtn.addEventListener("click", function(){
+                    deleteGame(item)
+                })
+                item.appendChild(deleteBtn)
                 list.appendChild(item)
             });
         }).catch((err) => {
