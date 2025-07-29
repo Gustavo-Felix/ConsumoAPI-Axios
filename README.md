@@ -80,4 +80,8 @@ Exemplo de resposta:
 {
     err: 'Credenciais inválidas!'
 }
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> 8f2bbf9c14b755c71d7a06c5828c70f69e877e0a
