@@ -71,8 +71,26 @@ const DB = {
 }
 
 app.get('/games', auth, (req, res) => {
+    var HATEOAS = [
+        {
+            href:"http://localhost:50000/game/0",
+            method:"DELETE",
+            rel:"delete_game"
+        },
+        {
+            href:"http://localhost:50000/games",
+            method:"GET",
+            rel:"get_game"
+        },
+        {
+            href:"http://localhost:50000/auth",
+            method:"POST",
+            rel:"login"
+        }
+    ]
+
     res.statusCode = 200
-    res.json(DB.games)
+    res.json({games: DB.games, _links: HATEOAS})
 })
 
 app.get('/game/:id', auth, (req, res) => {
@@ -80,6 +98,25 @@ app.get('/game/:id', auth, (req, res) => {
         res.sendStatus(400)
     } else {
         var id = parseInt(req.params.id)
+
+        var HATEOAS = [
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"DELETE",
+                rel:"delete_game"
+            },
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"GET",
+                rel:"get_game"
+            },
+            {
+                href:"http://localhost:50000/auth",
+                method:"POST",
+                rel:"login"
+            }
+        ]
+
         var correctGame = DB.games.find(g => g.id == id)
 
         if(!correctGame) {
@@ -110,6 +147,24 @@ app.delete('/game/:id', auth, (req, res) => {
         res.sendStatus(400)
     } else {
         var id = parseInt(req.params.id)
+
+        var HATEOAS = [
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"DELETE",
+                rel:"delete_game"
+            },
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"PUT",
+                rel:"edit_game"
+            },
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"GET",
+                rel:"get_game"
+            }
+        ]
         var indexGame = DB.games.findIndex(g => g.id == id)
 
         if(indexGame == -1){
@@ -127,6 +182,28 @@ app.put('/game/:id', auth, (req, res) => {
         res.sendStatus(400)
     } else {
         var id = parseInt(req.params.id)
+        var HATEOAS = [
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"DELETE",
+                rel:"delete_game"
+            },
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"PUT",
+                rel:"edit_game"
+            },
+            {
+                href:"http://localhost:50000/game/"+id,
+                method:"GET",
+                rel:"get_game"
+            },
+            {
+                href:"http://localhost:50000/games/",
+                method:"GET",
+                rel:"get_all_games"
+            }
+        ]
         var correctGame = DB.games.find(g => g.id == id)
 
         if(!correctGame) {
